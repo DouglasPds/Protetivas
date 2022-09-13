@@ -1,7 +1,43 @@
-import type { NextPage } from "next";
+import { Task } from "@prisma/client";
+import type { GetServerSideProps } from "next";
+import { prisma } from "../lib/prisma";
 
-const Home: NextPage = () => {
-  return <h1 className="text-3xl font-bold">Hello World</h1>;
+type TasksProps = {
+  tasks: Task;
+};
+
+const Home = ({ tasks }: TasksProps) => {
+  return (
+    <div>
+      <h1 className="text-3xl font-bold">Hello World</h1>
+      <pre>{JSON.stringify(tasks, null, 2)}</pre>
+    </div>
+  );
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const tasks = await prisma.task.findMany({
+    where: {
+      title: {
+        contains: "task",
+      },
+    },
+  });
+
+  const data = tasks.map((task) => {
+    return {
+      id: task.id,
+      title: task.title,
+      isDone: task.isDone,
+      date: task.createdAt.toISOString(),
+    };
+  });
+
+  return {
+    props: {
+      tasks: data,
+    },
+  };
+};
