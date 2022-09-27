@@ -10,11 +10,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Task {
-  id String @id @default(uuid())
+model Pessoa {
+  id Int @id @default(autoincrement())
 
-  title String
-  isDone Boolean
+  nome String
+  cpf Int @unique
+  email String @unique
+  telefone Int
+  cep Int
+  cidade String
+
+  ocorrencias Ocorrencia[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+model Ocorrencia {
+  id Int @id @default(autoincrement())
+
+  pessoa Pessoa @relation(fields: [id_pessoa], references: [id])
+  id_pessoa Int
+
+  cpf_vitima Int
+  cpf_agressor Int
+  observacao_ocorrencia String
+  data_ocorrencia DateTime
+
+  // documento_ocorrencia
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
