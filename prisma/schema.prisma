@@ -10,35 +10,69 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Pessoa {
-  id Int @id @default(autoincrement())
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
 
-  nome String
-  cpf Int @unique
-  email String @unique
-  telefone Int
-  cep Int
-  cidade String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  cpf String? @unique
+  telefone String?
+  cep String?
+  cidade String?
   ocorrencias Ocorrencia[]
+  accounts      Account[]
+  sessions      Session[]
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
+  @@unique([identifier, token])
 }
 
 model Ocorrencia {
-  id Int @id @default(autoincrement())
+  id            String    @id @default(cuid())
 
-  pessoa Pessoa @relation(fields: [id_pessoa], references: [id])
-  id_pessoa Int
+  user User @relation(fields: [id_user], references: [id])
+  id_user String
 
-  cpf_vitima Int
-  cpf_agressor Int
+  cpf_vitima String
+  cpf_agressor String
+  nome_agressor String
   observacao_ocorrencia String
   data_ocorrencia DateTime
 
-  // documento_ocorrencia
+  documento_ocorrencia Bytes?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
