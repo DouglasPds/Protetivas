@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { prisma } from "../../lib/prisma";
 
@@ -39,6 +40,7 @@ type Occurrence = {
 };
 
 export default function OccurrenceId({ data }: Occurrence) {
+  const router = useRouter();
   const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
       cpf_vitima: "",
@@ -70,6 +72,7 @@ export default function OccurrenceId({ data }: Occurrence) {
         },
         body: JSON.stringify(values),
       });
+      await router.push("/my-occurrences");
     } catch (error) {
       console.log(error);
     }
@@ -83,6 +86,7 @@ export default function OccurrenceId({ data }: Occurrence) {
           "Content-Type": "application/json",
         },
       });
+      await router.push("/my-occurrences");
     } catch (error) {
       console.log(error);
     }

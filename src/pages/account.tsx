@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { prisma } from "../lib/prisma";
 
@@ -27,6 +28,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 };
 
 export default function Account({ user }) {
+  const router = useRouter();
   const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
       nome: "",
@@ -57,6 +59,7 @@ export default function Account({ user }) {
         },
         body: JSON.stringify(data),
       });
+      await router.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -70,6 +73,7 @@ export default function Account({ user }) {
           "Content-Type": "application/json",
         },
       });
+      await router.push("/");
     } catch (error) {
       console.log(error);
     }

@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { prisma } from "../lib/prisma";
 
@@ -21,6 +22,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 };
 
 export default function Occurrence({ user }) {
+  const router = useRouter();
   const { register, handleSubmit } = useForm({
     defaultValues: {
       cpf_vitima: "",
@@ -44,6 +46,7 @@ export default function Occurrence({ user }) {
         },
         body: JSON.stringify(data),
       });
+      await router.push("/my-occurrences");
     } catch (error) {
       console.log(error);
     }
