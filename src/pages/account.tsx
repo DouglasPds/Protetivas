@@ -113,7 +113,17 @@ export default function Account({ user }) {
                 type="text"
                 tabIndex={0}
                 aria-label="cpf"
-                {...register("cpf")}
+                {...register("cpf", {
+                  required: true,
+                  maxLength: 14,
+                  pattern: /^(([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}))$/,
+                  setValueAs: (value) =>
+                    value.replace(
+                      /^(\d{3})\D*(\d{3})\D*(\d{3})\D*(\d{2})$/g,
+                      "$1.$2.$3-$4"
+                    ),
+                })}
+                required
                 className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
               />
             </div>

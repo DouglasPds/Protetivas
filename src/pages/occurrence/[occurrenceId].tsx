@@ -114,7 +114,17 @@ export default function OccurrenceId({ data }: Occurrence) {
                 type="text"
                 tabIndex={0}
                 aria-label="cpf da vitima"
-                {...register("cpf_vitima")}
+                {...register("cpf_vitima", {
+                  required: true,
+                  maxLength: 14,
+                  pattern: /^(([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}))$/,
+                  setValueAs: (value) =>
+                    value.replace(
+                      /^(\d{3})\D*(\d{3})\D*(\d{3})\D*(\d{2})$/g,
+                      "$1.$2.$3-$4"
+                    ),
+                })}
+                required
                 className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
               />
             </div>
@@ -126,7 +136,17 @@ export default function OccurrenceId({ data }: Occurrence) {
                 type="text"
                 tabIndex={0}
                 aria-label="cpf do agressor"
-                {...register("cpf_agressor")}
+                {...register("cpf_agressor", {
+                  required: true,
+                  maxLength: 14,
+                  pattern: /^(([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}))$/,
+                  setValueAs: (value) =>
+                    value.replace(
+                      /^(\d{3})\D*(\d{3})\D*(\d{3})\D*(\d{2})$/g,
+                      "$1.$2.$3-$4"
+                    ),
+                })}
+                required
                 className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
               />
             </div>
@@ -169,7 +189,7 @@ export default function OccurrenceId({ data }: Occurrence) {
                 className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
               />
             </div>
-            <div className="flex flex-col md:ml-12 md:mt-0 mt-8">
+            {/* <div className="flex flex-col md:ml-12 md:mt-0 mt-8">
               <label className="mb-3 text-sm leading-none text-gray-800">
                 Documento da Ocorrência
               </label>
@@ -180,7 +200,7 @@ export default function OccurrenceId({ data }: Occurrence) {
                 // {...register("documento_ocorrencia")}
                 className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
               />
-            </div>
+            </div> */}
           </div>
           <div className="flex">
             <button
