@@ -32,6 +32,8 @@ export default function Header() {
             </div>
           </Link>
 
+          {/* <SearchBar /> */}
+
           {session ? (
             <div className="hidden sm:flex flex-row space-x-4">
               <Link href="/occurrence">

@@ -33,12 +33,3 @@ export default async function createOccurrence(
   } else if (req.method === "GET") {
   }
 }
-
-// const { documento_ocorrencia } = req.body;
-// const documento = await prisma.doc.create({
-//   data: {
-//     documento: Buffer.from(documento_ocorrencia),
-//     // documento: documento_ocorrencia,
-//   },
-// });
-// res.json(documento);

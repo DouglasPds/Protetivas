@@ -76,4 +76,22 @@ model Ocorrencia {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  contestacoes Contestacao[]
+}
+
+model Contestacao {
+  id            String    @id @default(cuid())
+
+  ocorrencia Ocorrencia @relation(fields: [id_ocorrencia], references: [id])
+  id_ocorrencia String
+
+  nome String
+  cpf String
+  contestacao String
+}
+
+model Doc {
+  id Int @id @default(autoincrement())
+  documento Bytes
 }

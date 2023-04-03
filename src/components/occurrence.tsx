@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type Occurrence = {
   data: {
     id: string;
@@ -5,6 +7,7 @@ type Occurrence = {
     nome_agressor: string;
     data_ocorrencia: string;
     observacao_ocorrencia: string;
+    // contestacoes: [];
   };
 };
 
@@ -14,7 +17,17 @@ function convertsData(data: string) {
   return dateFormated;
 }
 
-export default function Occurrence({ data }: Occurrence) {
+type NumberContests = {
+  numberOfContests?: number;
+};
+
+type OccurrenceData = Occurrence & NumberContests;
+
+export default function Occurrence({ data, numberOfContests }: OccurrenceData) {
+  const saveIdOnLocalStorage = () => {
+    localStorage.setItem("id_occurrence", data.id);
+  };
+
   return (
     <div className="my-0 mx-auto py-8 lg:w-3/4">
       <div className="mb-7 bg-white p-6 shadow rounded">
@@ -42,10 +55,26 @@ export default function Occurrence({ data }: Occurrence) {
           <p className="pt-1 text-base font-medium leading-5 text-gray-800">
             Observação da ocorrência:
           </p>
-          <p className="text-sm leading-5 py-4 text-gray-600">
-            {data.observacao_ocorrencia}
-          </p>
+          <div className="flex justify-between">
+            <p className="text-sm leading-5 py-4 text-gray-600">
+              {data.observacao_ocorrencia}
+            </p>
+            {/* <p>
+              Número de contestações:{" "}
+              {localStorage.getItem("numberOfContests") || 34}
+            </p> */}
+          </div>
         </div>
+      </div>
+      <div className="flex justify-end">
+        <Link href="/contest">
+          <button
+            onClick={saveIdOnLocalStorage}
+            className="rounded-md flex space-x-2 w-24 h-10 font-normal text-sm leading-3 text-indigo-700 bg-white border border-indigo-700 focus:outline-none focus:bg-gray-200 hover:bg-gray-200 duration-150 justify-center items-center"
+          >
+            Contestar Ocorrência
+          </button>
+        </Link>
       </div>
     </div>
   );
